@@ -62,6 +62,11 @@
 
   <div>
     <h2>Manage Users</h2>
+    <a th:href="@{/users/new}">Create New User</a>
+  </div>
+
+  <div th:if="${message!=null}" class="alert alert-success text-center">
+    [[${message}]]
   </div>
 
   <div>
@@ -73,6 +78,7 @@
           <th>Last Name</th>
           <th>Roles</th>
           <th>Enabled</th>
+          <th></th>
       </thead>
       <tbody>
         <tr th:each="user : ${listUsers}">

@@ -114,4 +114,18 @@ public class User {
                 .map(Role::getName)
                 .collect(Collectors.joining(", "));
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", photos='" + photos + '\'' +
+                ", enabled=" + enabled +
+                ", roles=" + roles +
+                '}';
+    }
 }
