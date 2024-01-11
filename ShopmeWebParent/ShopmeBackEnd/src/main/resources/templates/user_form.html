@@ -64,7 +64,7 @@
         <h2>Manage Users | Create New User</h2>
     </div>
 
-    <form th:action="@{/users/save}" th:object="${user}" method="post" style="max-width: 700px; margin: 0 auto">
+    <form th:action="@{/users/save}" th:object="${user}" method="post" style="max-width: 700px; margin: 0 auto" onsubmit="return checkEmailUnique(this)">
         <div class="border border-secondary rounded p-3">
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">E-mail:</label>
@@ -117,19 +117,62 @@
         </div>
     </form>
 
+    <div class="modal fade text-center" id="modalDialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modalTitle">Warning</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <span id="modalBody"></span>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div>
         <p>Shopme Control Panel - Copyright &copy; Shopme </p>
     </div>
 
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript1.5">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" >
+
     $(document).ready(function() {
         $("#buttonCancel").on("click", function() {
             window.location = "[[@{/users}]]";
         });
     });
+
+    function checkEmailUnique(form){
+        url = "[[@{/users/check_email}]]";
+        userEmail = $("#email").val();
+        csrfValue = $("input[name='_csrf']").val();
+        params = {email: userEmail, _csrf: csrfValue};
+
+        $.post(url, params, function(response) {
+        console.log("Inside $.post callback");
+                if(response == "OK"){
+                    form.submit();
+                }else if(response == "Duplicate"){
+                    showModalDialog("Warning", "There is another user having the E-mail " +userEmail);
+                }
+            });
+        return false;
+    }
+
+    function showModalDialog(title, message){
+        $("#modalTitle").text(title);
+        $("#modalBody").text(message);
+        $("#modalDialog").modal("show");
+    }
 </script>
 
 
