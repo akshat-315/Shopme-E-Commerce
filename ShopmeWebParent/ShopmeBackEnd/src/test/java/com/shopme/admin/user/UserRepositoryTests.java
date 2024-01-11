@@ -9,9 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
@@ -92,4 +89,13 @@ public class UserRepositoryTests {
         User user = userRepository.getUserByEmail(email);
         assertThat(user).isNotNull();
     }
+
+    @Test
+    public void testCountById(){
+        Integer id = 111;
+        Long countById = userRepository.countById(id);
+
+        assertThat(countById).isNotNull().isGreaterThan(0);
+    }
+
 }
