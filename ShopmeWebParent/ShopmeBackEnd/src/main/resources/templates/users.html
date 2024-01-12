@@ -72,7 +72,7 @@
   </div>
 
   <div>
-    <table class="table tabled-bordered table-striped table-hover table-responive-xl">
+    <table class="table tabled-bordered table-striped table-hover table-responsive-xl">
       <thead class="thead-dark">
           <th>User ID</th>
           <th>Photos</th>
@@ -92,8 +92,10 @@
           <td>[[${user.lastName}]]</td>
           <td>[[${user.getFormattedRoles()}]]</td>
           <td>
-            <a th:if="${user.enabled == true}" class="fas fa-check-circle fa-1x icon-blue"></a>
-            <a th:if="${user.enabled == false}" class="fas fa-check-circle fa-1x icon-dark"></a>
+            <a th:if="${user.enabled == true}" class="fas fa-check-circle fa-1x icon-blue"
+               th:href="@{'users/' +${user.id}+ '/enabled/false'}"></a>
+            <a th:if="${user.enabled == false}" class="fas fa-check-circle fa-1x icon-dark"
+               th:href="@{'users/' +${user.id}+ '/enabled/true'}"></a>
           </td>
           <td>
             <a class="fas fa-edit fa-2x icon-green" th:href="@{'/users/edit/' + ${user.id}}" title="Edit this user"></a>
