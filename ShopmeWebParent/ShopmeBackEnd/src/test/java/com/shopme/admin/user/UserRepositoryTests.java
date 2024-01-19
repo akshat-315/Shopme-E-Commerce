@@ -16,7 +16,7 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@DataJpaTest
+@DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Rollback(value = false)
 public class UserRepositoryTests {
@@ -111,7 +111,7 @@ public class UserRepositoryTests {
 
     @Test
     public void testListFirstPage(){
-        int pageNumber = 0;
+        int pageNumber = 1;
         int pageSize = 4;
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
