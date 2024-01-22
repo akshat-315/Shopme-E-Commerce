@@ -81,7 +81,7 @@
             <a th:if="${sortField == 'id'}" th:href="@{'/users/page/' + ${currPage} + '?sortField=id&sortDir=' + ${reverseOrder}}" class="text-white">
             User ID
             </a>
-            <span th:if="${sortField == 'id'}" th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
+            <span th:if="${sortField == 'id'}" th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"/>
           </th>
           <th>Photos</th>
           <th>
@@ -91,7 +91,7 @@
             <a th:if="${sortField == 'email'}" th:href="@{'/users/page/' + ${currPage} + '?sortField=email&sortDir=' + ${reverseOrder}}" class="text-white">
             E-mail
             </a>
-            <span th:if="${sortField == 'email'}" th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
+            <span th:if="${sortField == 'email'}" th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"/>
           </th>
           <th>
             <a th:if="${sortField != 'firstName'}" th:href="@{'/users/page/' + ${currPage} + '?sortField=firstName&sortDir=' + ${sortDir}}" class="text-white">
@@ -109,7 +109,7 @@
             <a th:if="${sortField == 'lastName'}" th:href="@{'/users/page/' + ${currPage} + '?sortField=lastName&sortDir=' + ${reverseOrder}}" class="text-white">
             Last Name
             </a>
-            <span th:if="${sortField == 'lastName'}" th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
+            <span th:if="${sortField == 'lastName'}" th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"/>
           </th>
           <th>Roles</th>
           <th>
@@ -119,7 +119,7 @@
             <a th:if="${sortField == 'enabled'}" th:href="@{'/users/page/' + ${currPage} + '?sortField=enabled&sortDir=' + ${reverseOrder}}" class="text-white">
             Enabled
             </a>
-            <span th:if="${sortField == 'enabled'}" th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
+            <span th:if="${sortField == 'enabled'}" th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"/>
           </th>
           <th></th>
       </thead>
@@ -136,9 +136,9 @@
           <td>[[${user.getFormattedRoles()}]]</td>
           <td>
             <a th:if="${user.enabled == true}" class="fas fa-check-circle fa-1x icon-blue"
-               th:href="@{'users/' +${user.id}+ '/enabled/false'}"></a>
+               th:href="@{'/users/' +${user.id}+ '/enabled/false'}"></a>
             <a th:if="${user.enabled == false}" class="fas fa-check-circle fa-1x icon-dark"
-               th:href="@{'users/' +${user.id}+ '/enabled/true'}"></a>
+               th:href="@{'/users/' +${user.id}+ '/enabled/true'}"></a>
           </td>
           <td>
             <a class="fas fa-edit fa-2x icon-green" th:href="@{'/users/edit/' + ${user.id}}" title="Edit this user"></a>
