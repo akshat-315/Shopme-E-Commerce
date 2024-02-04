@@ -9,7 +9,7 @@ $(document).ready(function() {
 	dropdownBrands.change(function() {
 		dropdownCategories.empty();
 		getCategories();
-	});	
+	});
 
 	getCategoriesForNewForm();
 
@@ -27,13 +27,13 @@ function getCategoriesForNewForm() {
 }
 
 function getCategories() {
-	brandId = dropdownBrands.val(); 
+	brandId = dropdownBrands.val();
 	url = brandModuleURL + "/" + brandId + "/categories";
 
 	$.get(url, function(responseJson) {
 		$.each(responseJson, function(index, category) {
 			$("<option>").val(category.id).text(category.name).appendTo(dropdownCategories);
-		});			
+		});
 	});
 }
 
@@ -43,13 +43,13 @@ function checkUnique(form) {
 
 	csrfValue = $("input[name='_csrf']").val();
 
-	params = {id: productId, name: productName, _csrf: csrfValue};
+	params = { id: productId, name: productName, _csrf: csrfValue };
 
 	$.post(checkUniqueUrl, params, function(response) {
 		if (response == "OK") {
 			form.submit();
 		} else if (response == "Duplicate") {
-			showWarningModal("There is another product having the name " + productName);	
+			showWarningModal("There is another product having the name " + productName);
 		} else {
 			showErrorModal("Unknown response from server");
 		}
@@ -59,4 +59,4 @@ function checkUnique(form) {
 	});
 
 	return false;
-}
+}	

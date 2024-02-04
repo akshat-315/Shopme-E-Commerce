@@ -1,29 +1,41 @@
 package com.shopme.admin;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import com.shopme.admin.paging.PagingAndSortingArgumentResolver;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        String dirName = "user-photos";
-        Path userPhotoDir = Paths.get(dirName);
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		exposeDirectory("user-photos", registry);
+		exposeDirectory("../category-images", registry);
+		exposeDirectory("../brand-logos", registry);
+		exposeDirectory("../product-images", registry);
+		exposeDirectory("../site-logo", registry);
+	}
+	
+	private void exposeDirectory(String pathPattern, ResourceHandlerRegistry registry) {
+		Path path = Paths.get(pathPattern);
+		String absolutePath = path.toFile().getAbsolutePath();
+		
+		String logicalPath = pathPattern.replace("../", "") + "/**";
+				
+		registry.addResourceHandler(logicalPath)
+			.addResourceLocations("file:/" + absolutePath + "/");		
+	}
 
-        String userPhotosPath = userPhotoDir.toFile().getAbsolutePath();
-        //The resulting userPhotosPath variable will contain the absolute path of the directory represented by userPhotoDir as a string.
+	@Override
+	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+		resolvers.add(new PagingAndSortingArgumentResolver());
+	}
 
-        registry.addResourceHandler("/" + dirName + "/**")
-                .addResourceLocations("file:/" + userPhotosPath + "/");
-        //The "file:/" prefix indicates that the resources should be served from the local file system.
-        //
-        //Putting it all together, this configuration tells Spring MVC to handle requests matching the specified pattern ("/directoryName/") by
-        // serving static resources from the local directory specified by userPhotosPath. This can be useful for serving images, stylesheets,
-        // or other static content from a local directory within your application.
-    }
 }

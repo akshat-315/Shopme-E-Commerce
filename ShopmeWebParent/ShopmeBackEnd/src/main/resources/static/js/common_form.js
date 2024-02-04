@@ -1,9 +1,5 @@
-/**
- * 
- */
 $(document).ready(function() {
 	$("#buttonCancel").on("click", function() {
-		//console.log(moduleURL);
 		window.location = moduleURL;
 	});
 
@@ -13,9 +9,18 @@ $(document).ready(function() {
 		}
 
 		showImageThumbnail(this);
-
 	});
 });
+
+function showImageThumbnail(fileInput) {
+	var file = fileInput.files[0];
+	var reader = new FileReader();
+	reader.onload = function(e) {
+		$("#thumbnail").attr("src", e.target.result);
+	};
+
+	reader.readAsDataURL(file);
+}
 
 function checkFileSize(fileInput) {
 	fileSize = fileInput.files[0].size;
@@ -29,19 +34,8 @@ function checkFileSize(fileInput) {
 		fileInput.setCustomValidity("");
 
 		return true;
-	}	
+	}
 }
-
-
-function showImageThumbnail(fileInput) {
-	var file = fileInput.files[0];
-	var reader = new FileReader();
-	reader.onload = function(e) {
-		$("#thumbnail").attr("src", e.target.result);
-	};
-
-	reader.readAsDataURL(file);
-} 
 
 function showModalDialog(title, message) {
 	$("#modalTitle").text(title);

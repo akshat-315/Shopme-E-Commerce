@@ -16,8 +16,6 @@ $(document).ready(function() {
 	buttonDeleteState = $("#buttonDeleteState");
 	labelStateName = $("#labelStateName");
 	fieldStateName = $("#fieldStateName");
-	
-	fieldStateName.prop("disabled", true);
 
 	buttonLoad4States.click(function() {
 		loadCountries4States();
@@ -33,9 +31,7 @@ $(document).ready(function() {
 
 	buttonAddState.click(function() {
 		if (buttonAddState.val() == "Add") {
-			if(checkUnique()){
-				addState();
-			}
+			addState();
 		} else {
 			changeFormStateToNew();
 		}
@@ -67,13 +63,12 @@ function deleteState() {
 		showToastMessage("The state has been deleted");
 	}).fail(function() {
 		showToastMessage("ERROR: Could not connect to server or server encountered an error");
-	});		
+	});
 }
 
 function updateState() {
-	
 	if (!validateFormState()) return;
-	
+
 	url = contextPath + "states/save";
 	stateId = dropDownStates.val();
 	stateName = fieldStateName.val();
@@ -82,7 +77,7 @@ function updateState() {
 	countryId = selectedCountry.val();
 	countryName = selectedCountry.text();
 
-	jsonData = {id: stateId, name: stateName, country: {id: countryId, name: countryName}};
+	jsonData = { id: stateId, name: stateName, country: { id: countryId, name: countryName } };
 
 	$.ajax({
 		type: 'POST',
@@ -98,13 +93,12 @@ function updateState() {
 		changeFormStateToNew();
 	}).fail(function() {
 		showToastMessage("ERROR: Could not connect to server or server encountered an error");
-	});	
+	});
 }
 
 function addState() {
-	
 	if (!validateFormState()) return;
-	
+
 	url = contextPath + "states/save";
 	stateName = fieldStateName.val();
 
@@ -112,7 +106,7 @@ function addState() {
 	countryId = selectedCountry.val();
 	countryName = selectedCountry.text();
 
-	jsonData = {name: stateName, country: {id: countryId, name: countryName}};
+	jsonData = { name: stateName, country: { id: countryId, name: countryName } };
 
 	$.ajax({
 		type: 'POST',
@@ -131,6 +125,16 @@ function addState() {
 
 }
 
+function validateFormState() {
+	formState = document.getElementById("formState");
+	if (!formState.checkValidity()) {
+		formState.reportValidity();
+		return false;
+	}
+
+	return true;
+}
+
 function selectNewlyAddedState(stateId, stateName) {
 	$("<option>").val(stateId).text(stateName).appendTo(dropDownStates);
 
@@ -145,18 +149,14 @@ function changeFormStateToNew() {
 
 	buttonUpdateState.prop("disabled", true);
 	buttonDeleteState.prop("disabled", true);
-	
-	fieldStateName.prop("disabled", false);
-	
-	fieldStateName.val("").focus();	
+
+	fieldStateName.val("").focus();
 }
 
 function changeFormStateToSelectedState() {
 	buttonAddState.prop("value", "New");
 	buttonUpdateState.prop("disabled", false);
 	buttonDeleteState.prop("disabled", false);
-	
-	fieldStateName.prop("disabled", false);
 
 	labelStateName.text("Selected State/Province:");
 
@@ -182,7 +182,7 @@ function loadStates4Country() {
 		showToastMessage("All states have been loaded for country " + selectedCountry.text());
 	}).fail(function() {
 		showToastMessage("ERROR: Could not connect to server or server encountered an error");
-	});	
+	});
 }
 
 function loadCountries4States() {
@@ -200,54 +200,4 @@ function loadCountries4States() {
 	}).fail(function() {
 		showToastMessage("ERROR: Could not connect to server or server encountered an error");
 	});
-} 
-
-function validateFormState() {
-	formState = document.getElementById("formState");
-	if (!formState.checkValidity()) {
-		formState.reportValidity();
-		return false;
-	}	
-
-	return true;
 }
-
-function checkUnique() {
-
-	console.log("checkUnique is working");
-	
-	stateName = $("#fieldStateName").val();
-	
-	console.log(stateName);
-	
-	csrfValue = $("input[name='_csrf']").val();
-	
-	jsonData = {name: stateName, _csrf: csrfValue};
-	
-	checkUniqueUrl = contextPath + "states/check_unique";
-	
-	$.ajax({
-		type: 'POST',
-		url: checkUniqueUrl,
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader(csrfHeaderName, csrfValue);
-		},
-		data: JSON.stringify(jsonData),
-		contentType: 'application/json'
-	}).done(function(response) {
-		if (response == "OK") {
-			return true;
-		} else if (response == "Duplicate") {
-			showToastMessage("State already added :  " + stateName);
-			return false;	
-		} else {
-			showToastMessage("Unknown response from server");
-			return false;
-		}
-	}).fail(function() {
-		showToastMessage("ERROR: Could not connect to server or server encountered an error");
-		return false;
-	});
-	
-	return false;
-}	 

@@ -3,7 +3,7 @@ var data;
 var chartOptions;
 
 $(document).ready(function() {
-	setupButtonEventHandlers("_product", loadSalesReportByDateForProduct);	
+	setupButtonEventHandlers("_product", loadSalesReportByDateForProduct);
 });
 
 function loadSalesReportByDateForProduct(period) {
@@ -13,7 +13,7 @@ function loadSalesReportByDateForProduct(period) {
 
 		requestURL = contextPath + "reports/product/" + startDate + "/" + endDate;
 	} else {
-		requestURL = contextPath + "reports/product/" + period;		
+		requestURL = contextPath + "reports/product/" + period;
 	}
 
 	$.get(requestURL, function(responseJSON) {
@@ -46,7 +46,7 @@ function prepareChartDataForSalesReportByProduct(responseJSON) {
 
 function customizeChartForSalesReportByProduct() {
 	chartOptions = {
-		height: 360, width: '80%',
+		height: 360, width: '98%',
 		showRowNumber: true,
 		page: 'enable',
 		sortColumn: 2,
@@ -57,4 +57,4 @@ function customizeChartForSalesReportByProduct() {
 function drawChartForSalesReportByProduct() {
 	var salesChart = new google.visualization.Table(document.getElementById('chart_sales_by_product'));
 	salesChart.draw(data, chartOptions);
-} 
+}

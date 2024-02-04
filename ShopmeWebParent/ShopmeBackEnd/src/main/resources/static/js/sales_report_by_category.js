@@ -3,7 +3,7 @@ var data;
 var chartOptions;
 
 $(document).ready(function() {
-	setupButtonEventHandlers("_category", loadSalesReportByDateForCategory);	
+	setupButtonEventHandlers("_category", loadSalesReportByDateForCategory);
 });
 
 function loadSalesReportByDateForCategory(period) {
@@ -13,7 +13,7 @@ function loadSalesReportByDateForCategory(period) {
 
 		requestURL = contextPath + "reports/category/" + startDate + "/" + endDate;
 	} else {
-		requestURL = contextPath + "reports/category/" + period;		
+		requestURL = contextPath + "reports/category/" + period;
 	}
 
 	$.get(requestURL, function(responseJSON) {
@@ -45,11 +45,11 @@ function prepareChartDataForSalesReportByCategory(responseJSON) {
 
 function customizeChartForSalesReportByCategory() {
 	chartOptions = {
-		height: 360, legend: {position: 'right'}
+		height: 360, legend: { position: 'right' }
 	};
 }
 
 function drawChartForSalesReportByCategory() {
 	var salesChart = new google.visualization.PieChart(document.getElementById('chart_sales_by_category'));
 	salesChart.draw(data, chartOptions);
-} 
+}

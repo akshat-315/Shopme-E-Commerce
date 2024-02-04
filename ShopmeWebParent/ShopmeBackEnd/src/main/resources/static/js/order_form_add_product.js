@@ -1,9 +1,8 @@
 var productDetailCount;
 
 $(document).ready(function() {
-	
 	productDetailCount = $(".hiddenProductId").length;
-	
+
 	$("#products").on("click", "#linkAddProduct", function(e) {
 		e.preventDefault();
 		link = $(this);
@@ -15,10 +14,10 @@ $(document).ready(function() {
 
 		$("#addProductModal").modal();
 	})
-}); 
+});
 
 function addProduct(productId, productName) {
-	getShippingCost(productId);	
+	getShippingCost(productId);
 }
 
 function getShippingCost(productId) {
@@ -27,11 +26,11 @@ function getShippingCost(productId) {
 
 	state = $("#state").val();
 	if (state.length == 0) {
-		state = $("#city").val();		
+		state = $("#city").val();
 	}
 
 	requestUrl = contextPath + "get_shipping_cost";
-	params = {productId: productId, countryId: countryId, state: state};
+	params = { productId: productId, countryId: countryId, state: state };
 
 	$.ajax({
 		type: 'POST',
@@ -39,7 +38,7 @@ function getShippingCost(productId) {
 		beforeSend: function(xhr) {
 			xhr.setRequestHeader(csrfHeaderName, csrfValue);
 		},
-		data: params		
+		data: params
 	}).done(function(shippingCost) {
 		getProductInfo(productId, shippingCost);
 	}).fail(function(err) {
@@ -48,7 +47,7 @@ function getShippingCost(productId) {
 		getProductInfo(productId, shippingCost);
 	}).always(function() {
 		$("#addProductModal").modal("hide");
-	});		
+	});
 }
 
 function getProductInfo(productId, shippingCost) {
@@ -62,12 +61,12 @@ function getProductInfo(productId, shippingCost) {
 
 		htmlCode = generateProductCode(productId, productName, mainImagePath, productCost, productPrice, shippingCost);
 		$("#productList").append(htmlCode);
-		
+
 		updateOrderAmounts();
 
 	}).fail(function(err) {
 		showWarningModal(err.responseJSON.message);
-	});	
+	});
 }
 
 function generateProductCode(productId, productName, mainImagePath, productCost, productPrice, shippingCost) {
@@ -77,16 +76,16 @@ function generateProductCode(productId, productName, mainImagePath, productCost,
 	quantityId = "quantity" + nextCount;
 	priceId = "price" + nextCount;
 	subtotalId = "subtotal" + nextCount;
-	blankLineId= "blankLine" + nextCount;
+	blankLineId = "blankLine" + nextCount;
 
 	htmlCode = `
 		<div class="border rounded p-1" id="${rowId}">
-		    <input type="hidden" name="detailId" value="0" />
+			<input type="hidden" name="detailId" value="0" />
 			<input type="hidden" name="productId" value="${productId}" class="hiddenProductId" />
 			<div class="row">
 				<div class="col-1">
 					<div class="divCount">${nextCount}</div>
-					<div><a class="fas fa-trash icon-dark linkRemove" href="" rowNumber="${nextCount}"></a></div>					
+					<div><a class="fas fa-trash icon-dark linkRemove" href="" rowNumber="${nextCount}"></a></div>				
 				</div>
 				<div class="col-3">
 					<img src="${mainImagePath}" class="img-fluid" />
@@ -103,7 +102,7 @@ function generateProductCode(productId, productName, mainImagePath, productCost,
 					<td>Product Cost:</td>
 					<td>
 						<input type="text" required class="form-control m-1 cost-input"
-						    name="productDetailCost"
+							name="productDetailCost"
 							rowNumber="${nextCount}" 
 							value="${productCost}" style="max-width: 140px"/>
 					</td>
@@ -112,7 +111,7 @@ function generateProductCode(productId, productName, mainImagePath, productCost,
 					<td>Quantity:</td>
 					<td>
 						<input type="number" step="1" min="1" max="5" class="form-control m-1 quantity-input"
-						    name="quantity"
+							name="quantity"
 							id="${quantityId}"
 							rowNumber="${nextCount}" 
 							value="1" style="max-width: 140px"/>
@@ -122,7 +121,7 @@ function generateProductCode(productId, productName, mainImagePath, productCost,
 					<td>Unit Price:</td>
 					<td>
 						<input type="text" required class="form-control m-1 price-input"
-						    name="productPrice"
+							name="productPrice"
 							id="${priceId}"
 							rowNumber="${nextCount}" 
 							value="${productPrice}" style="max-width: 140px"/>
@@ -132,7 +131,7 @@ function generateProductCode(productId, productName, mainImagePath, productCost,
 					<td>Subtotal:</td>
 					<td>
 						<input type="text" readonly="readonly" class="form-control m-1 subtotal-output"
-						    name="productSubtotal"
+							name="productSubtotal"
 							id="${subtotalId}" 
 							value="${productPrice}" style="max-width: 140px"/>
 					</td>
@@ -141,7 +140,7 @@ function generateProductCode(productId, productName, mainImagePath, productCost,
 					<td>Shipping Cost:</td>
 					<td>
 						<input type="text" required class="form-control m-1 ship-input"
-						    name="productShipCost"  
+							name="productShipCost" 
 							value="${shippingCost}" style="max-width: 140px"/>
 					</td>
 				</tr>											
@@ -150,7 +149,7 @@ function generateProductCode(productId, productName, mainImagePath, productCost,
 			
 		</div>
 		<div id="${blankLineId}"class="row">&nbsp;</div>	
-	`;	
+	`;
 
 	return htmlCode;
 }
@@ -168,4 +167,4 @@ function isProductAlreadyAdded(productId) {
 	});
 
 	return productExists;
-} 
+}

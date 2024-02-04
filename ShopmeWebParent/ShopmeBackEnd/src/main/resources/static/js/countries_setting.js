@@ -16,9 +16,6 @@ $(document).ready(function() {
 	labelCountryName = $("#labelCountryName");
 	fieldCountryName = $("#fieldCountryName");
 	fieldCountryCode = $("#fieldCountryCode");
-	
-	fieldCountryName.prop("disabled", true);
-	fieldCountryCode.prop("disabled", true);
 
 	buttonLoad.click(function() {
 		loadCountries();
@@ -30,9 +27,7 @@ $(document).ready(function() {
 
 	buttonAddCountry.click(function() {
 		if (buttonAddCountry.val() == "Add") {
-			if(checkUnique()){
-				addCountry();
-			}	
+			addCountry();
 		} else {
 			changeFormStateToNewCountry();
 		}
@@ -65,20 +60,19 @@ function deleteCountry() {
 		showToastMessage("The country has been deleted");
 	}).fail(function() {
 		showToastMessage("ERROR: Could not connect to server or server encountered an error");
-	});		
+	});
 }
 
 function updateCountry() {
-	
 	if (!validateFormCountry()) return;
-	
+
 	url = contextPath + "countries/save";
 	countryName = fieldCountryName.val();
 	countryCode = fieldCountryCode.val();
 
 	countryId = dropDownCountry.val().split("-")[0];
 
-	jsonData = {id: countryId, name: countryName, code: countryCode};
+	jsonData = { id: countryId, name: countryName, code: countryCode };
 
 	$.ajax({
 		type: 'POST',
@@ -96,17 +90,27 @@ function updateCountry() {
 		changeFormStateToNewCountry();
 	}).fail(function() {
 		showToastMessage("ERROR: Could not connect to server or server encountered an error");
-	});	
+	});
+}
+
+function validateFormCountry() {
+	formCountry = document.getElementById("formCountry");
+	if (!formCountry.checkValidity()) {
+		formCountry.reportValidity();
+		return false;
+	}
+
+	return true;
 }
 
 function addCountry() {
-	
+
 	if (!validateFormCountry()) return;
-	
+
 	url = contextPath + "countries/save";
 	countryName = fieldCountryName.val();
 	countryCode = fieldCountryCode.val();
-	jsonData = {name: countryName, code: countryCode};
+	jsonData = { name: countryName, code: countryCode };
 
 	$.ajax({
 		type: 'POST',
@@ -139,22 +143,15 @@ function changeFormStateToNewCountry() {
 	buttonAddCountry.val("Add");
 	labelCountryName.text("Country Name:");
 
-	fieldCountryName.prop("disabled", false);
-	fieldCountryCode.prop("disabled", false);
-
-	buttonUpdateCountry.prop("disabled", false);
-	buttonDeleteCountry.prop("disabled", false);
+	buttonUpdateCountry.prop("disabled", true);
+	buttonDeleteCountry.prop("disabled", true);
 
 	fieldCountryCode.val("");
-	fieldCountryName.val("").focus();	
+	fieldCountryName.val("").focus();
 }
 
 function changeFormStateToSelectedCountry() {
 	buttonAddCountry.prop("value", "New");
-	
-	fieldCountryName.prop("disabled", false);
-	fieldCountryCode.prop("disabled", false);
-	
 	buttonUpdateCountry.prop("disabled", false);
 	buttonDeleteCountry.prop("disabled", false);
 
@@ -172,12 +169,12 @@ function loadCountries() {
 	url = contextPath + "countries/list";
 	$.get(url, function(responseJSON) {
 		dropDownCountry.empty();
-		
+
 		$.each(responseJSON, function(index, country) {
 			optionValue = country.id + "-" + country.code;
 			$("<option>").val(optionValue).text(country.name).appendTo(dropDownCountry);
 		});
-		
+
 	}).done(function() {
 		buttonLoad.val("Refresh Country List");
 		showToastMessage("All countries have been loaded");
@@ -190,54 +187,3 @@ function showToastMessage(message) {
 	$("#toastMessage").text(message);
 	$(".toast").toast('show');
 }
-
-function validateFormCountry() {
-	formCountry = document.getElementById("formCountry");
-	if (!formCountry.checkValidity()) {
-		formCountry.reportValidity();
-		return false;
-	}	
-
-	return true;
-}
-
-
-function checkUnique() {
-
-	console.log("checkUnique is working");
-	
-	countryName = $("#fieldCountryName").val();
-	
-	console.log(countryName);
-	
-	csrfValue = $("input[name='_csrf']").val();
-	
-	jsonData = {name: countryName, _csrf: csrfValue};
-	
-	checkUniqueUrl = contextPath + "countries/check_unique";
-	
-	$.ajax({
-		type: 'POST',
-		url: checkUniqueUrl,
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader(csrfHeaderName, csrfValue);
-		},
-		data: JSON.stringify(jsonData),
-		contentType: 'application/json'
-	}).done(function(response) {
-		if (response == "OK") {
-			return true;
-		} else if (response == "Duplicate") {
-			showToastMessage("Country already added :  " + countryName);
-			return false;	
-		} else {
-			showToastMessage("Unknown response from server");
-			return false;
-		}
-	}).fail(function() {
-		showToastMessage("ERROR: Could not connect to server or server encountered an error");
-		return false;
-	});
-	
-	return false;
-}	 

@@ -2,7 +2,6 @@
 var MILLISECONDS_A_DAY = 24 * 60 * 60 * 1000;
 
 function setupButtonEventHandlers(reportType, callbackFunction) {
-
 	$(".button-sales-by" + reportType).on("click", function() {
 		$(".button-sales-by" + reportType).each(function(e) {
 			$(this).removeClass('btn-primary').addClass('btn-light');
@@ -16,14 +15,14 @@ function setupButtonEventHandlers(reportType, callbackFunction) {
 			$("#divCustomDateRange" + reportType).addClass("d-none");
 		} else {
 			$("#divCustomDateRange" + reportType).removeClass("d-none");
-		}		
+		}
 	});
 
 	initCustomDateRange(reportType);
 
 	$("#buttonViewReportByDateRange" + reportType).on("click", function(e) {
 		validateDateRange(reportType, callbackFunction);
-	});	
+	});
 }
 
 function validateDateRange(reportType, callbackFunction) {
@@ -61,7 +60,7 @@ function initCustomDateRange(reportType) {
 	fromDate = new Date();
 	fromDate.setDate(toDate.getDate() - 30);
 	startDateField.valueAsDate = fromDate;
-}	
+}
 
 function formatCurrency(amount) {
 	formattedAmount = $.number(amount, decimalDigits, decimalPointType, thousandsPointType);
@@ -97,7 +96,7 @@ function setSalesAmount(period, reportType, labelTotalItems) {
 	$("#textAvgGrossSales" + reportType).text(formatCurrency(totalGrossSales / denominator));
 	$("#textAvgNetSales" + reportType).text(formatCurrency(totalNetSales / denominator));
 	$("#labelTotalItems" + reportType).text(labelTotalItems);
-	$("#textTotalItems" + reportType).text(totalItems);	
+	$("#textTotalItems" + reportType).text(totalItems);
 }
 
 function formatChartData(data, columnIndex1, columnIndex2) {
@@ -110,5 +109,5 @@ function formatChartData(data, columnIndex1, columnIndex2) {
 	});
 
 	formatter.format(data, columnIndex1);
-	formatter.format(data, columnIndex2);	
-} 
+	formatter.format(data, columnIndex2);
+}
